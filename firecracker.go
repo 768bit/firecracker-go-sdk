@@ -20,9 +20,9 @@ import (
 
 	"github.com/sirupsen/logrus"
 
-	"github.com/firecracker-microvm/firecracker-go-sdk/client"
-	models "github.com/firecracker-microvm/firecracker-go-sdk/client/models"
-	ops "github.com/firecracker-microvm/firecracker-go-sdk/client/operations"
+	"github.com/768bit/firecracker-go-sdk/client"
+	models "github.com/768bit/firecracker-go-sdk/client/models"
+	ops "github.com/768bit/firecracker-go-sdk/client/operations"
 )
 
 const firecrackerRequestTimeout = 500 * time.Millisecond
@@ -248,6 +248,22 @@ func (f *Client) GetMachineConfiguration(opts ...GetMachineConfigurationOpt) (*o
 	}
 
 	return f.client.Operations.GetMachineConfiguration(p)
+}
+
+// GetMachineConfigurationOpt  is a functional option to be used for the
+// GetMachineConfiguration API in setting any additional optional fields.
+type DescribeInstanceOpt func(*ops.DescribeInstanceParams)
+
+// GetMachineConfiguration is a wrapper for the swagger generated client to make
+// calling of the API easier.
+func (f *Client) GetInstanceDescription(opts ...DescribeInstanceOpt) (*ops.DescribeInstanceOK, error) {
+	p := ops.NewDescribeInstanceParams()
+	p.SetTimeout(firecrackerRequestTimeout)
+	for _, opt := range opts {
+		opt(p)
+	}
+
+	return f.client.Operations.DescribeInstance(p)
 }
 
 // PatchGuestDriveByIDOpt is a functional option to be used for the PutMmds API in setting

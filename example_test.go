@@ -9,8 +9,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/firecracker-microvm/firecracker-go-sdk"
-	models "github.com/firecracker-microvm/firecracker-go-sdk/client/models"
+	"github.com/768bit/firecracker-go-sdk"
+	models "github.com/768bit/firecracker-go-sdk/client/models"
 )
 
 func ExampleWithProcessRunner_logging() {

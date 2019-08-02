@@ -9,7 +9,7 @@ allows for convenient manipulation of Firecracker VM from Go programs.
 
 There are some Firecracker features that are not yet supported by the
 SDK.  These are tracked as GitHub issues with the
-[firecracker-feature](https://github.com/firecracker-microvm/firecracker-go-sdk/issues?q=is%3Aissue+is%3Aopen+label%3Afirecracker-feature)
+[firecracker-feature](https://github.com/768bit/firecracker-go-sdk/issues?q=is%3Aissue+is%3Aopen+label%3Afirecracker-feature)
 label . Contributions to address missing features are welcomed.
 
 Developing
@@ -42,7 +42,7 @@ Questions?
 ---
 
 Please use
-[GitHub issues](https://github.com/firecracker-microvm/firecracker-go-sdk/issues)
+[GitHub issues](https://github.com/768bit/firecracker-go-sdk/issues)
 to report problems, discuss roadmap items, or make feature requests.
 
 If you've discovered an issue that may have security implications to

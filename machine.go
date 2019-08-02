@@ -26,7 +26,7 @@ import (
 	"syscall"
 	"time"
 
-	models "github.com/firecracker-microvm/firecracker-go-sdk/client/models"
+	models "github.com/768bit/firecracker-go-sdk/client/models"
 	log "github.com/sirupsen/logrus"
 )
 

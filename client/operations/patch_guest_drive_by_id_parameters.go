@@ -30,7 +30,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	client_models "github.com/firecracker-microvm/firecracker-go-sdk/client/models"
+	client_models "github.com/768bit/firecracker-go-sdk/client/models"
 )
 
 // NewPatchGuestDriveByIDParams creates a new PatchGuestDriveByIDParams object

@@ -29,10 +29,10 @@ import (
 	"testing"
 	"time"
 
-	models "github.com/firecracker-microvm/firecracker-go-sdk/client/models"
-	"github.com/firecracker-microvm/firecracker-go-sdk/client/operations"
-	ops "github.com/firecracker-microvm/firecracker-go-sdk/client/operations"
-	"github.com/firecracker-microvm/firecracker-go-sdk/fctesting"
+	models "github.com/768bit/firecracker-go-sdk/client/models"
+	"github.com/768bit/firecracker-go-sdk/client/operations"
+	ops "github.com/768bit/firecracker-go-sdk/client/operations"
+	"github.com/768bit/firecracker-go-sdk/fctesting"
 	"github.com/stretchr/testify/assert"
 )
 
