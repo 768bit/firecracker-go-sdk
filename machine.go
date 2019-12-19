@@ -21,7 +21,6 @@ import (
 	"os"
 	"os/exec"
 	"os/signal"
-	"strconv"
 	"sync"
 	"syscall"
 	"time"
@@ -299,6 +298,11 @@ func (m *Machine) Shutdown(ctx context.Context) error {
 	m.logger.Debug("Called machine.Shutdown()")
 	return m.sendCtrlAltDel(ctx)
 }
+// Shutdown requests a clean shutdown of the VM by sending CtrlAltDelete on the virtual keyboard
+func (m *Machine) Stop(ctx context.Context) error {
+	m.logger.Debug("Called machine.Stop()")
+	return m.stopVMM()
+}
 
 // Wait will wait until the firecracker process has finished.  Wait is safe to
 // call concurrently, and will deliver the same error to all callers, subject to
@@ -323,7 +327,7 @@ func (m *Machine) addVsocks(ctx context.Context, vsocks ...VsockDevice) error {
 
 func (m *Machine) createNetworkInterfaces(ctx context.Context, ifaces ...NetworkInterface) error {
 	for id, iface := range ifaces {
-		if err := m.createNetworkInterface(ctx, iface, id+1); err != nil {
+		if err := m.createNetworkInterface(ctx, iface, fmt.Sprintf("eth%d", id)); err != nil {
 			return err
 		}
 		m.logger.Debugf("createNetworkInterface returned for %s", iface.HostDevName)
@@ -540,12 +544,12 @@ func (m *Machine) createBootSource(ctx context.Context, imagePath, kernelArgs st
 	return err
 }
 
-func (m *Machine) createNetworkInterface(ctx context.Context, iface NetworkInterface, iid int) error {
-	ifaceID := strconv.Itoa(iid)
-	m.logger.Printf("Attaching NIC %s (hwaddr %s) at index %s", iface.HostDevName, iface.MacAddress, ifaceID)
+func (m *Machine) createNetworkInterface(ctx context.Context, iface NetworkInterface, iid string) error {
+	//ifaceID := strconv.Itoa(iid)
+	m.logger.Printf("Attaching NIC %s (hwaddr %s) at index %s", iface.HostDevName, iface.MacAddress, iid)
 
 	ifaceCfg := models.NetworkInterface{
-		IfaceID:           &ifaceID,
+		IfaceID:           &iid,
 		GuestMac:          iface.MacAddress,
 		HostDevName:       String(iface.HostDevName),
 		AllowMmdsRequests: iface.AllowMMDS,
@@ -567,7 +571,7 @@ func (m *Machine) createNetworkInterface(ctx context.Context, iface NetworkInter
 		ifaceCfg.TxRateLimiter = iface.OutRateLimiter
 	}
 
-	resp, err := m.client.PutGuestNetworkInterfaceByID(ctx, ifaceID, &ifaceCfg)
+	resp, err := m.client.PutGuestNetworkInterfaceByID(ctx, iid, &ifaceCfg)
 	if err == nil {
 		m.logger.Printf("PutGuestNetworkInterfaceByID: %s", resp.Error())
 	}
