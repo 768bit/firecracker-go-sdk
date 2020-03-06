@@ -177,6 +177,7 @@ func (m *Machine) PID() (int, error) {
 
 // NetworkInterface represents a Firecracker microVM's network interface.
 type NetworkInterface struct {
+	Name string
 	// MacAddress defines the MAC address that should be assigned to the network
 	// interface inside the microVM.
 	MacAddress string
@@ -298,6 +299,7 @@ func (m *Machine) Shutdown(ctx context.Context) error {
 	m.logger.Debug("Called machine.Shutdown()")
 	return m.sendCtrlAltDel(ctx)
 }
+
 // Shutdown requests a clean shutdown of the VM by sending CtrlAltDelete on the virtual keyboard
 func (m *Machine) Stop(ctx context.Context) error {
 	m.logger.Debug("Called machine.Stop()")
@@ -326,11 +328,11 @@ func (m *Machine) addVsocks(ctx context.Context, vsocks ...VsockDevice) error {
 }
 
 func (m *Machine) createNetworkInterfaces(ctx context.Context, ifaces ...NetworkInterface) error {
-	for id, iface := range ifaces {
-		if err := m.createNetworkInterface(ctx, iface, fmt.Sprintf("eth%d", id)); err != nil {
+	for _, iface := range ifaces {
+		if err := m.createNetworkInterface(ctx, iface, iface.Name); err != nil {
 			return err
 		}
-		m.logger.Debugf("createNetworkInterface returned for %s", iface.HostDevName)
+		m.logger.Debugf("createNetworkInterface returned for %s -> %s", iface.HostDevName, iface.Name)
 	}
 
 	return nil
